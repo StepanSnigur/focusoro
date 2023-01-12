@@ -6,22 +6,28 @@ export interface ITheme {
   background: string,
   secondaryBackground: string,
   color: string,
+  error: string,
 }
 type ThemeName = 'light' | 'dark'
 const initialValue = {
-  theme: 'light' as ThemeName,
+  theme: 'dark' as ThemeName,
   toggle: () => {},
   themes: {
     dark: {
       color: 'rgba(255, 255, 255, 0.87)',
       background: '#242424',
+      secondaryBackground: '#3B3B3B',
       button: '#1a1a1a',
       secondaryButton: '#1C1C1E',
+      error: '#EB615A',
     },
     light: {
       color: '#213547',
       button: '#f5f5f5',
       secondaryButton: '#F5F5F5',
+      background: '#fff',
+      secondaryBackground: '#F7F7FA',
+      error: '#EB615A',
     },
   },
   currentTheme: {},

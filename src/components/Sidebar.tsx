@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { ITasksList } from '../reducers/tasksReducer'
+import { IProjects } from '../reducers/tasksReducer'
 import { ThemeContext, ITheme } from '../context/themeContext'
 
 const Wrapper = styled.div`
@@ -20,25 +20,52 @@ const ListLink = styled(Link)`
     active: string,
     theme: ITheme,
   }) => (props.active === 'true') ? props.theme.button : 'transparent'};
-  color: ${(props: { theme: ITheme }) => props.theme.color}
+  color: ${(props: { theme: ITheme }) => props.theme.color};
 `
 
 interface ISidebar {
-  lists: ITasksList[]
+  projects: IProjects[]
 }
-export const Sidebar: React.FC<ISidebar> = ({ lists }) => {
+export const Sidebar: React.FC<ISidebar> = ({ projects }) => {
   const { listId } = useParams()
+  const listName = window.location.pathname.split('/').at(-1)
   const { currentTheme } = useContext(ThemeContext)
 
   return (
     <Wrapper>
-      {lists.map(list => (
+      <ListLink
+        active={('today' === listName).toString()}
+        theme={currentTheme}
+        to="/list/today"
+      >Сегодня</ListLink>
+      <ListLink
+        active={('tomorrow' === listName).toString()}
+        theme={currentTheme}
+        to="/list/tomorrow"
+      >Завтра</ListLink>
+      <ListLink
+        active={('all' === listName).toString()}
+        theme={currentTheme}
+        to="/list/all"
+      >Все задачи</ListLink>
+      <ListLink
+        active={('completed' === listName).toString()}
+        theme={currentTheme}
+        to="/list/completed"
+      >Выполненные</ListLink>
+      <ListLink
+        active={('planned' === listName).toString()}
+        theme={currentTheme}
+        to="/list/planned"
+      >Все запланированные</ListLink>
+
+      {projects.map(project => (
         <ListLink
-          key={list._id}
-          to={`/list/${list._id}`}
-          active={(list._id === listId).toString()}
+          key={project._id}
+          to={`/list/${project._id}`}
+          active={(project._id === listId).toString()}
           theme={currentTheme}
-        >{list.name}</ListLink>
+        >{project.name}</ListLink>
       ))}
     </Wrapper>
   )

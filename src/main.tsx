@@ -12,6 +12,7 @@ import { TasksRoot } from './routes/tasksRoot'
 import { TasksList } from './routes/tasksList'
 import './index.css'
 import { ThemeProvider } from './context/themeContext'
+import { AllTasksList } from './routes/allTasksList'
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,27 @@ const router = createBrowserRouter([
       {
         path: '/list/:listId',
         element: <TasksList />,
-      }
+      },
+      {
+        path: '/list/today',
+        element: <div>today</div>,
+      },
+      {
+        path: '/list/tomorrow',
+        element: <div>tomorrow</div>,
+      },
+      {
+        path: '/list/all',
+        element: <AllTasksList />,
+      },
+      {
+        path: '/list/completed',
+        element: <div>completed</div>,
+      },
+      {
+        path: '/list/planned',
+        element: <div>planned</div>,
+      },
     ],
   },
 ])
