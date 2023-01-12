@@ -11,11 +11,11 @@ const TasksWrapper = styled.div`
 `
 
 export const TasksRoot = () => {
-  const lists = useAppSelector(state => state.tasks.lists)
+  const projects = useAppSelector(state => state.tasks.projects)
 
   return (
     <TasksWrapper>
-      <Sidebar lists={lists} />
+      <Sidebar projects={projects} />
       <Outlet />
     </TasksWrapper>
   )

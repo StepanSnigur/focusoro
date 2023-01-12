@@ -1,11 +1,11 @@
 import { useContext } from 'react'
-import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../hooks'
+import { getAllTasks } from '../selectors/tasksSelectors'
 import styled from 'styled-components'
-import { ThemeContext, ITheme } from '../context/themeContext'
 import { TasksListInfo } from '../components/TasksListInfo'
 import { TasksListInput } from '../components/TasksListInput'
-import { TasksList as TasksListItem } from '../components/TasksList'
+import { ThemeContext, ITheme } from '../context/themeContext'
+import { TasksList } from '../components/TasksList'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -23,16 +23,14 @@ const TasksHeadline = styled.div`
   }
 `
 
-export const TasksList = () => {
-  const { listId } = useParams()
-  const activeList = useAppSelector(state => state.tasks.projects.find(projejct => projejct._id === listId))
+export const AllTasksList = () => {
   const { currentTheme } = useContext(ThemeContext)
+  const allTasks = useAppSelector(getAllTasks)
 
-  if (!listId || !activeList) return <div>error</div>
   return (
     <TasksListWrapper theme={currentTheme}>
       <TasksHeadline>
-        <h3>{activeList.name}</h3>
+        <h3>Все задачи</h3>
         <button>change sort</button>
       </TasksHeadline>
       <TasksListInfo
@@ -41,7 +39,7 @@ export const TasksList = () => {
         passedTime={253}
       />
       <TasksListInput />
-      <TasksListItem list={activeList.tasks} />
+      <TasksList list={allTasks} />
     </TasksListWrapper>
   )
 }

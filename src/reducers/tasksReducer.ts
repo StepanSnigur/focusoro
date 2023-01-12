@@ -6,20 +6,29 @@ export interface ITask {
   completed: boolean,
   priorityLevel: number,
 }
-export interface ITasksList {
+export interface IProjects {
   _id: string,
   name: string,
   tasks: ITask[],
 }
 interface ITasksReducer {
-  lists: ITasksList[],
+  userTasks: ITask[],
+  projects: IProjects[],
 }
 
 const initialState: ITasksReducer = {
-  lists: [
+  userTasks: [
+    {
+      _id: 'test user task',
+      name: 'test user task',
+      completed: true,
+      priorityLevel: 5,
+    },
+  ],
+  projects: [
     {
       _id: '1',
-      name: 'Задачи',
+      name: 'Test project',
       tasks: [
         {
           _id: 'test task',
