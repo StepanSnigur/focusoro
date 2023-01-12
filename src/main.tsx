@@ -11,6 +11,7 @@ import App from './App'
 import { TasksRoot } from './routes/tasksRoot'
 import { TasksList } from './routes/tasksList'
 import './index.css'
+import { ThemeProvider } from './context/themeContext'
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
 )

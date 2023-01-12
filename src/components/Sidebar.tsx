@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { ITasksList } from '../reducers/tasksReducer'
+import { ThemeContext, ITheme } from '../context/themeContext'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -15,7 +16,11 @@ const ListLink = styled(Link)`
   padding: 10px 15px;
   box-sizing: border-box;
   border-radius: 8px;
-  background: ${(props: { active: string }) => (props.active === 'true') ? '#F5F5F5' : 'transparent'} ;
+  background: ${(props: {
+    active: string,
+    theme: ITheme,
+  }) => (props.active === 'true') ? props.theme.button : 'transparent'};
+  color: ${(props: { theme: ITheme }) => props.theme.color}
 `
 
 interface ISidebar {
@@ -23,6 +28,7 @@ interface ISidebar {
 }
 export const Sidebar: React.FC<ISidebar> = ({ lists }) => {
   const { listId } = useParams()
+  const { currentTheme } = useContext(ThemeContext)
 
   return (
     <Wrapper>
@@ -31,6 +37,7 @@ export const Sidebar: React.FC<ISidebar> = ({ lists }) => {
           key={list._id}
           to={`/list/${list._id}`}
           active={(list._id === listId).toString()}
+          theme={currentTheme}
         >{list.name}</ListLink>
       ))}
     </Wrapper>
