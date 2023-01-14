@@ -5,6 +5,7 @@ export interface ITask {
   name: string,
   completed: boolean,
   priorityLevel: number,
+  date: string,
 }
 export interface IProjects {
   _id: string,
@@ -23,6 +24,7 @@ const initialState: ITasksReducer = {
       name: 'test user task',
       completed: true,
       priorityLevel: 5,
+      date: '2023-01-12',
     },
   ],
   projects: [
@@ -35,6 +37,7 @@ const initialState: ITasksReducer = {
           name: 'test task',
           completed: false,
           priorityLevel: 5,
+          date: '2023-01-14',
         }
       ]
     }
@@ -44,11 +47,15 @@ export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    // createNewList: (state) => {
-    //   state.lists.push()
-    // }
+    addTaskToProject: (state, action) => {
+      const currentProject = state.projects.find(project => project._id === action.payload.projectId)
+      if (currentProject) currentProject?.tasks.push(action.payload.newTask)
+    },
+    addTaskToUser: (state, action) => {
+      state.userTasks.push(action.payload)
+    }
   }
 })
 
-// export const { increment } = tasksSlice.actions
+export const { addTaskToProject, addTaskToUser } = tasksSlice.actions
 export default tasksSlice.reducer

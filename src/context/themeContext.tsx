@@ -10,7 +10,7 @@ export interface ITheme {
 }
 type ThemeName = 'light' | 'dark'
 const initialValue = {
-  theme: 'dark' as ThemeName,
+  theme: 'light' as ThemeName,
   toggle: () => {},
   themes: {
     dark: {
