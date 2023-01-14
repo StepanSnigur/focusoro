@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
-import { ITask } from '../reducers/tasksReducer'
+import { ITaskWithListId } from '../selectors/tasksSelectors'
+import { useAppDispatch } from '../hooks'
+import { completeTask } from '../reducers/tasksReducer'
 import styled from 'styled-components'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { Checkbox } from './Checkbox'
@@ -35,13 +37,18 @@ const TaskDate = styled.h5`
 `
 
 interface ITaskWrapper {
-  task: ITask
+  task: ITaskWithListId
 }
 export const Task: React.FC<ITaskWrapper> = ({ task }) => {
+  const dispatch = useAppDispatch()
   const { currentTheme } = useContext(ThemeContext)
 
-  const handleCompleteTask = (completed: boolean, id: string) => {
-    console.log(completed, id, 'task')
+  const handleCompleteTask = (completed: boolean) => {
+    dispatch(completeTask({
+      completed,
+      listId: task.listId,
+      taskId: task._id,
+    }))
   }
   const handlePlay = (id: string) => {
     console.log('play', id)
@@ -53,7 +60,7 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
     >
       <Checkbox
         checked={task.completed}
-        onChange={(completed) => handleCompleteTask(completed, task._id)}
+        onChange={(completed) => handleCompleteTask(completed)}
       />
       <PlayButton icon={faPlay} onClick={() => handlePlay(task._id)} />
       <span>{task.name}</span>

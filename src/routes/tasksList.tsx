@@ -6,6 +6,7 @@ import { ThemeContext, ITheme } from '../context/themeContext'
 import { TasksListInfo } from '../components/TasksListInfo'
 import { TasksListInput } from '../components/TasksListInput'
 import { TasksList as TasksListItem } from '../components/TasksList'
+import { getCurrentProject } from '../selectors/tasksSelectors'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -25,10 +26,12 @@ const TasksHeadline = styled.div`
 
 export const TasksList = () => {
   const { listId } = useParams()
-  const activeList = useAppSelector(state => state.tasks.projects.find(projejct => projejct._id === listId))
+  if (!listId) return <div>error</div>
+
+  const activeList = useAppSelector(getCurrentProject(listId))
   const { currentTheme } = useContext(ThemeContext)
 
-  if (!listId || !activeList) return <div>error</div>
+  if (!activeList) return <div>error</div>
   return (
     <TasksListWrapper theme={currentTheme}>
       <TasksHeadline>
