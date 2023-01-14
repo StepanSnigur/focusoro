@@ -13,6 +13,10 @@ import { TasksList } from './routes/tasksList'
 import './index.css'
 import { ThemeProvider } from './context/themeContext'
 import { AllTasksList } from './routes/allTasksList'
+import { TodayTasksList } from './routes/todayTasksList'
+import { TomorrowTasksList } from './routes/tomorrowTasksList'
+import { CompletedTasksList } from './routes/completedTasksList'
+import { PlannedTasksList } from './routes/plannedTasksList'
 
 const router = createBrowserRouter([
   {
@@ -29,11 +33,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/list/today',
-        element: <div>today</div>,
+        element: <TodayTasksList />,
       },
       {
         path: '/list/tomorrow',
-        element: <div>tomorrow</div>,
+        element: <TomorrowTasksList />,
       },
       {
         path: '/list/all',
@@ -41,11 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/list/completed',
-        element: <div>completed</div>,
+        element: <CompletedTasksList />,
       },
       {
         path: '/list/planned',
-        element: <div>planned</div>,
+        element: <PlannedTasksList />,
       },
     ],
   },
