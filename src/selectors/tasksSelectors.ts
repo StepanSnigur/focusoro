@@ -1,9 +1,35 @@
 import { RootState } from '../store'
+import { IProject, ITask } from '../reducers/tasksReducer'
 import { getDiffInDays } from '../utils/dateUtils'
 
+export interface ITaskWithListId extends ITask {
+  listId?: string,
+}
+export const getCurrentProject = (id: string) => (state: RootState) => {
+  const currentProject = {...state.tasks.projects.find(project => project._id === id)} as IProject
+
+  if (!currentProject) return null
+  const tasksWithListId = currentProject.tasks.map(task => {
+    const newTask = {...task} as ITaskWithListId
+    newTask.listId = currentProject._id
+    return newTask
+  })
+  currentProject.tasks = tasksWithListId
+  return currentProject
+}
 export const getAllTasks = (state: RootState) => {
-  const allUserTasks = state.tasks.userTasks
-  const allProjectsTasks = state.tasks.projects.map(project => project.tasks).flat()
+  const allUserTasks = [...state.tasks.userTasks].map(task => {
+    const newTask = {...task} as ITaskWithListId
+    newTask.listId = undefined
+    return newTask
+  })
+  const allProjectsTasks = state.tasks.projects.map(project => {
+    return project.tasks.map(task => {
+      const newTask = {...task} as ITaskWithListId
+      newTask.listId = project._id
+      return newTask
+    })
+  }).flat()
   return [...allUserTasks, ...allProjectsTasks]
 }
 export const getTodayTasks = (state: RootState) => {

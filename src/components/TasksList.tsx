@@ -1,8 +1,9 @@
-import { ITask } from '../reducers/tasksReducer'
+import { ITaskWithListId } from '../selectors/tasksSelectors'
 import { Task } from './Task'
 
 interface ITasksList {
-  list: ITask[]
+  list: ITaskWithListId[]
+  id?: string
 }
 export const TasksList: React.FC<ITasksList> = ({ list }) => (
   <div>
