@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { Checkbox } from './Checkbox'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faClock } from '@fortawesome/free-solid-svg-icons'
 import { getDiffInDays } from '../utils/dateUtils'
 
 const TaskWrapper = styled.div`
@@ -34,6 +34,16 @@ const TaskDate = styled.h5`
   margin: 0;
   padding: 0;
   margin-left: auto;
+`
+const TaskPriorityWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+`
+const SliderIcon = styled(FontAwesomeIcon)`
+  margin-left: 5px;
+  opacity: ${(props: { active: string }) => (props.active === 'true') ? 1 : .4};
+  font-size: 12px;
 `
 
 interface ITaskWrapper {
@@ -64,6 +74,11 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
       />
       <PlayButton icon={faPlay} onClick={() => handlePlay(task._id)} />
       <span>{task.name}</span>
+      {task.priorityLevel ? <TaskPriorityWrapper>
+        {new Array(5).fill(null).map((_, i) => (
+          <SliderIcon icon={faClock} active={(i <= task.priorityLevel).toString()} />
+        ))}
+      </TaskPriorityWrapper> : null}
       <TaskDate theme={currentTheme} isOverdue={getDiffInDays(task.date) < 0}>{task.date}</TaskDate>
     </TaskWrapper>
   )
