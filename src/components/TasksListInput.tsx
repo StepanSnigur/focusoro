@@ -4,9 +4,7 @@ import { useAppDispatch } from '../hooks'
 import { addTaskToProject, addTaskToUser } from '../reducers/tasksReducer'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendar } from '@fortawesome/free-solid-svg-icons'
-// import Calendar from 'react-calendar'
-// import 'react-calendar/dist/Calendar.css'
+import { faCalendar, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import TextField from '@mui/material/TextField'
@@ -27,7 +25,7 @@ const Input = styled.input`
   box-sizing: border-box;
   border: none;
   border-radius: 12px;
-  padding: 0 24px;
+  padding: 0 38px;
   background: ${(props: { theme: ITheme }) => props.theme.background};
 `
 const CalendarButton = styled(FontAwesomeIcon)`
@@ -49,6 +47,14 @@ const InvisibleTextField = styled(TextField)`
   right: 0;
   top: 0;
 `
+const PlusIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+  cursor: pointer;
+  z-index: 2;
+`
 
 interface ITaskListInput {
   listId?: string
@@ -64,25 +70,32 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
   const handleChangeTaskName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(e.target.value)
   }
+  const handleAddTask = () => {
+    if (taskName.length === 0) return false
+
+    const formattedDate = dayjs(taskDate).format('YYYY-MM-DD')
+    const newTask = {
+      _id: Date.now(),
+      name: taskName,
+      completed: false,
+      priorityLevel: 1, //TODO
+      date: formattedDate,
+    }
+
+    if (listId) {
+      dispatch(addTaskToProject({
+        newTask,
+        projectId: listId,
+      }))
+    } else {
+      dispatch(addTaskToUser(newTask))
+    }
+
+    setTaskName('')
+  }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      const formattedDate = dayjs(taskDate).format('YYYY-MM-DD')
-      const newTask = {
-        _id: Date.now(),
-        name: taskName,
-        completed: false,
-        priorityLevel: 1, //TODO
-        date: formattedDate,
-      }
-
-      if (listId) {
-        dispatch(addTaskToProject({
-          newTask,
-          projectId: listId,
-        }))
-      } else {
-        dispatch(addTaskToUser(newTask))
-      }
+      handleAddTask()
     }
   }
   const handleOpenCalendar = () => {
@@ -95,6 +108,7 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
 
   return (
     <InputWrapper>
+      <PlusIcon icon={faPlus} onClick={handleAddTask} />
       <Input
         placeholder="введите название задачи"
         theme={currentTheme}
