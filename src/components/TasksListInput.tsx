@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import TextField from '@mui/material/TextField'
 import dayjs, { Dayjs } from 'dayjs'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
+import { PrioritySlider } from './PrioritySlider'
 
 const InputWrapper = styled.div`
   width: 100%;
@@ -66,6 +67,7 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
   const [taskName, setTaskName] = useState('')
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [taskDate, setTaskDate] = useState<Dayjs | null>(dayjs(plannedTaskDate) || dayjs())
+  const [taskPriority, setTaskPriority] = useState<number | null>(null)
 
   const handleChangeTaskName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(e.target.value)
@@ -78,7 +80,7 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
       _id: Date.now(),
       name: taskName,
       completed: false,
-      priorityLevel: 1, //TODO
+      priorityLevel: taskPriority,
       date: formattedDate,
     }
 
@@ -92,6 +94,8 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
     }
 
     setTaskName('')
+    setTaskPriority(null)
+    setIsCalendarOpen(false)
   }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -105,6 +109,9 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
     setTaskDate(date as Dayjs)
     setIsCalendarOpen(false)
   }
+  const handlePriorityChange = (priority: number | null) => {
+    setTaskPriority(priority)
+  }
 
   return (
     <InputWrapper>
@@ -116,6 +123,7 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
         onChange={handleChangeTaskName}
         onKeyDown={handleKeyDown}
       />
+      <PrioritySlider onPriorityChange={handlePriorityChange} priority={taskPriority} />
       {plannedTaskDate ? null : <LocalizationProvider dateAdapter={AdapterDayjs}>
         <CalendarRange
           label="выберите дату"
