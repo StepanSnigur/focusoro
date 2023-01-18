@@ -7,6 +7,7 @@ import { TasksListInput } from '../components/TasksListInput'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { TasksList } from '../components/TasksList'
 import { getFormattedNearDays } from '../utils/dateUtils'
+import { SortButton } from '../components/SortButton'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -32,7 +33,7 @@ export const TodayTasksList = () => {
     <TasksListWrapper theme={currentTheme}>
       <TasksHeadline>
         <h3>Задачи на сегодня</h3>
-        <button>change sort</button>
+        <SortButton />
       </TasksHeadline>
       <TasksListInfo
         pendingTasks={12}

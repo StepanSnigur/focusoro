@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { TasksListInfo } from '../components/TasksListInfo'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { TasksList } from '../components/TasksList'
+import { SortButton } from '../components/SortButton'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -30,7 +31,7 @@ export const CompletedTasksList = () => {
     <TasksListWrapper theme={currentTheme}>
       <TasksHeadline>
         <h3>Завершенные задачи</h3>
-        <button>change sort</button>
+        <SortButton />
       </TasksHeadline>
       <TasksListInfo
         pendingTasks={12}
