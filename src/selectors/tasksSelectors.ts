@@ -1,5 +1,5 @@
 import { RootState } from '../store'
-import { IProject, ITask } from '../reducers/tasksReducer'
+import { IProject, ITask, SORT_SETTINGS } from '../reducers/tasksReducer'
 import { getDiffInDays } from '../utils/dateUtils'
 
 export interface ITaskWithListId extends ITask {
@@ -56,4 +56,10 @@ export const getPlannedTasks = (state: RootState) => {
 export const getCompletedTasks = (state: RootState) => {
   const allTasks = getAllTasks(state)
   return allTasks.filter(task => task.completed)
+}
+export const getActiveSortTerm = (state: RootState) => {
+  return state.tasks.sortTerm
+}
+export const getActiveSortData = (state: RootState) => {
+  return SORT_SETTINGS[state.tasks.sortTerm]
 }

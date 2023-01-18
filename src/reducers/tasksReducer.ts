@@ -1,4 +1,5 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import { ITaskWithListId } from '../selectors/tasksSelectors'
 
 export interface ITask {
   _id: string,
@@ -15,8 +16,24 @@ export interface IProject {
 interface ITasksReducer {
   userTasks: ITask[],
   projects: IProject[],
+  sortTerm: sortSettingsNames,
 }
 
+export const SORT_SETTINGS = {
+  byDate: {
+    translation: 'по дате',
+    sortFn: (a: ITaskWithListId, b: ITaskWithListId) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  },
+  byDefault: {
+    translation: 'по порядку проекта',
+    sortFn: () => 1,
+  },
+  byPriority: {
+    translation: 'по приоритету',
+    sortFn: (a: ITaskWithListId, b: ITaskWithListId) => b.priorityLevel - a.priorityLevel,
+  },
+}
+export type sortSettingsNames = keyof typeof SORT_SETTINGS
 const initialState: ITasksReducer = {
   userTasks: [
     {
@@ -41,7 +58,8 @@ const initialState: ITasksReducer = {
         }
       ]
     }
-  ]
+  ],
+  sortTerm: 'byDefault',
 }
 export const tasksSlice = createSlice({
   name: 'tasks',
@@ -66,8 +84,11 @@ export const tasksSlice = createSlice({
         currentTask && (currentTask.completed = action.payload.completed)
       }
     },
+    changeSortTerm: (state, action) => {
+      state.sortTerm = action.payload
+    },
   }
 })
 
-export const { addTaskToProject, addTaskToUser, completeTask } = tasksSlice.actions
+export const { addTaskToProject, addTaskToUser, completeTask, changeSortTerm } = tasksSlice.actions
 export default tasksSlice.reducer

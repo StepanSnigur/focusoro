@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useAppSelector } from '../hooks'
+import { getActiveSortData } from '../selectors/tasksSelectors'
 import styled from 'styled-components'
 import { ITaskWithListId } from '../selectors/tasksSelectors'
 import { Task } from './Task'
@@ -14,9 +16,12 @@ interface ITasksList {
   id?: string
 }
 export const TasksList: React.FC<ITasksList> = ({ list }) => {
+  const activeSortData = useAppSelector(getActiveSortData)
   const [ completedOpen, setCompletedOpen ] = useState(false)
-  const inProgress = list.filter(task => !task.completed)
-  const completed = list.filter(task => task.completed)
+
+  const sortedList = list.sort(activeSortData.sortFn)
+  const inProgress = sortedList.filter(task => !task.completed)
+  const completed = sortedList.filter(task => task.completed)
 
   const handleCompletedOpen = () => {
     setCompletedOpen(prevState => !prevState)

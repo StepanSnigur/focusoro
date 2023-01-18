@@ -7,6 +7,7 @@ import { TasksListInfo } from '../components/TasksListInfo'
 import { TasksListInput } from '../components/TasksListInput'
 import { TasksList as TasksListItem } from '../components/TasksList'
 import { getCurrentProject } from '../selectors/tasksSelectors'
+import { SortButton } from '../components/SortButton'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -36,7 +37,7 @@ export const TasksList = () => {
     <TasksListWrapper theme={currentTheme}>
       <TasksHeadline>
         <h3>{activeList.name}</h3>
-        <button>change sort</button>
+        <SortButton />
       </TasksHeadline>
       <TasksListInfo
         pendingTasks={12}
