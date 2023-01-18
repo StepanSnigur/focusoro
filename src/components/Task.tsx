@@ -76,7 +76,7 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
       <span>{task.name}</span>
       {task.priorityLevel ? <TaskPriorityWrapper>
         {new Array(5).fill(null).map((_, i) => (
-          <SliderIcon icon={faClock} active={(i <= task.priorityLevel).toString()} />
+          <SliderIcon key={i} icon={faClock} active={(i <= task.priorityLevel).toString()} />
         ))}
       </TaskPriorityWrapper> : null}
       <TaskDate theme={currentTheme} isOverdue={getDiffInDays(task.date) < 0}>{task.date}</TaskDate>
