@@ -63,3 +63,6 @@ export const getActiveSortTerm = (state: RootState) => {
 export const getActiveSortData = (state: RootState) => {
   return SORT_SETTINGS[state.tasks.sortTerm]
 }
+export const getAddProjectModalState = (state: RootState) => {
+  return state.tasks.addProjectModalOpen
+}

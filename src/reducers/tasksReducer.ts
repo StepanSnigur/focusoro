@@ -11,12 +11,14 @@ export interface ITask {
 export interface IProject {
   _id: string,
   name: string,
+  color: string,
   tasks: ITask[],
 }
 interface ITasksReducer {
   userTasks: ITask[],
   projects: IProject[],
   sortTerm: sortSettingsNames,
+  addProjectModalOpen: boolean,
 }
 
 export const SORT_SETTINGS = {
@@ -48,6 +50,7 @@ const initialState: ITasksReducer = {
     {
       _id: '1',
       name: 'Test project',
+      color: '#000',
       tasks: [
         {
           _id: 'test task',
@@ -60,6 +63,7 @@ const initialState: ITasksReducer = {
     }
   ],
   sortTerm: 'byDefault',
+  addProjectModalOpen: false,
 }
 export const tasksSlice = createSlice({
   name: 'tasks',
@@ -87,8 +91,27 @@ export const tasksSlice = createSlice({
     changeSortTerm: (state, action) => {
       state.sortTerm = action.payload
     },
+    setAddProjectModalOpen: (state, action) => {
+      state.addProjectModalOpen = action.payload
+    },
+    addProject: (state, action) => {
+      const newProject = {
+        _id: Date.now().toString(),
+        name: action.payload.name,
+        color: action.payload.color,
+        tasks: [],
+      }
+      state.projects.push(newProject)
+    },
   }
 })
 
-export const { addTaskToProject, addTaskToUser, completeTask, changeSortTerm } = tasksSlice.actions
+export const {
+  addTaskToProject,
+  addTaskToUser,
+  completeTask,
+  changeSortTerm,
+  setAddProjectModalOpen,
+  addProject,
+} = tasksSlice.actions
 export default tasksSlice.reducer
