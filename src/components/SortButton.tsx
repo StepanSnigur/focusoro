@@ -10,6 +10,10 @@ import { changeSortTerm } from '../reducers/tasksReducer'
 
 const SortButtonWrapper = styled.button`
   position: relative;
+
+  &:focus {
+    outline: none;
+  }
 `
 const SortButtonContentWrapper = styled.div`
   position: fixed;
@@ -22,11 +26,14 @@ const SortButtonContentWrapper = styled.div`
 `
 const SortButtonContent = styled.div`
   min-width: 160px;
+  max-height: ${(props: { active: string }) => (props.active === 'true') ? '140px' : 0};
+  overflow: hidden;
+  transition: .3s;
   position: absolute;
   right: 0;
   top: 120%;
   background: ${(props: { theme: ITheme }) => props.theme.button};
-  padding: 12px;
+  padding: ${(props: { active: string }) => (props.active === 'true') ? '12px' : 0};
   border-radius: 8px;
   box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
   z-index: 5;
@@ -78,21 +85,19 @@ export const SortButton = () => {
   return (
     <SortButtonWrapper onClick={handleSetIsOpen}>
       <FontAwesomeIcon icon={faSort} />
-      {isOpen ? <>
-        <SortButtonContentWrapper />
-        <SortButtonContent theme={currentTheme}>
-          {settingsNames.map((key: sortSettingsNames, i) => (
-            <SortOption
-              key={i}
-              theme={currentTheme}
-              active={(activeSortTerm === key).toString()}
-              onClick={() => handleChangeSortOption(key)}
-            >
-              {SORT_SETTINGS[key].translation}
-            </SortOption>
-          ))}
-        </SortButtonContent>
-      </> : null}
+      {isOpen ? <SortButtonContentWrapper /> : null}
+      <SortButtonContent theme={currentTheme} active={isOpen.toString()}>
+        {settingsNames.map((key: sortSettingsNames, i) => (
+          <SortOption
+            key={i}
+            theme={currentTheme}
+            active={(activeSortTerm === key).toString()}
+            onClick={() => handleChangeSortOption(key)}
+          >
+            {SORT_SETTINGS[key].translation}
+          </SortOption>
+        ))}
+      </SortButtonContent>
     </SortButtonWrapper>
   )
 }
