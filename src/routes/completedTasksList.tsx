@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import { useAppSelector } from '../hooks'
-import { getCompletedTasks } from '../selectors/tasksSelectors'
+import { getActiveSortData, getCompletedTasks } from '../selectors/tasksSelectors'
 import styled from 'styled-components'
 import { TasksListInfo } from '../components/TasksListInfo'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { TasksList } from '../components/TasksList'
 import { SortButton } from '../components/SortButton'
+import { Task } from '../components/Task'
 
 const TasksListWrapper = styled.div`
   background: ${(props: { theme: ITheme }) => props.theme.secondaryBackground};
@@ -25,7 +26,9 @@ const TasksHeadline = styled.div`
 
 export const CompletedTasksList = () => {
   const { currentTheme } = useContext(ThemeContext)
+  const activeSortData = useAppSelector(getActiveSortData)
   const completedTasks = useAppSelector(getCompletedTasks)
+  const sortedList = completedTasks.sort(activeSortData.sortFn)
 
   return (
     <TasksListWrapper theme={currentTheme}>
@@ -38,7 +41,7 @@ export const CompletedTasksList = () => {
         completedTasks={0}
         passedTime={253}
       />
-      <TasksList list={completedTasks} />
+      {sortedList.map(task => <Task task={task} key={task._id} />)}
     </TasksListWrapper>
   )
 }

@@ -1,7 +1,13 @@
 import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { getAllTasks, getCompletedTasks, getPlannedTasks, getTodayTasks, getTomorrowTasks } from '../selectors/tasksSelectors'
+import {
+  getAllTasks,
+  getCompletedTasks,
+  getPlannedTasks,
+  getTodayTasks,
+  getTomorrowTasks,
+} from '../selectors/tasksSelectors'
 import styled from 'styled-components'
 import { IProject, setAddProjectModalOpen } from '../reducers/tasksReducer'
 import { ThemeContext, ITheme } from '../context/themeContext'
@@ -20,18 +26,36 @@ const ListLink = styled(Link)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px 15px;
+  padding: 10px 15px 10px 20px;
   box-sizing: border-box;
   border-radius: 8px;
   background: ${(props: {
     active: string,
     theme: ITheme,
+    projectColor?: string,
   }) => (props.active === 'true') ? props.theme.button : 'transparent'};
   color: ${(props: { theme: ITheme }) => props.theme.color};
+  position: relative;
+  transition: .3s;
 
   span {
     font-size: 12px;
     opacity: .7;
+  }
+
+  &:before {
+    content: '';
+    display: ${(props: { projectColor?: string }) => props.projectColor ? 'block' : 'none'};
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${(props: {
+      projectColor?: string,
+    }) => props.projectColor};
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `
 const Divider = styled.div`
@@ -105,6 +129,7 @@ export const Sidebar: React.FC<ISidebar> = ({ projects }) => {
           to={`/list/${project._id}`}
           active={(project._id === listId).toString()}
           theme={currentTheme}
+          projectColor={project.color}
         >{project.name} <span>{project.tasks.length}</span></ListLink>
       ))}
 

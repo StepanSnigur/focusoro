@@ -137,7 +137,7 @@ export const AddProjectModal = () => {
     if (projectName) {
       dispatch(addProject({
         name: projectName,
-        color: activeColor,
+        color: PROJECT_COLORS[activeColor],
       }))
       setProjectName('')
       handleClose()
