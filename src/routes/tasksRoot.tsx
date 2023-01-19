@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { useAppSelector } from '../hooks'
 import styled from 'styled-components'
 import { Sidebar } from '../components/Sidebar'
+import { AddProjectModal } from '../components/AddProjectModal'
 
 const TasksWrapper = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ export const TasksRoot = () => {
     <TasksWrapper>
       <Sidebar projects={projects} />
       <Outlet />
+      <AddProjectModal />
     </TasksWrapper>
   )
 }

@@ -7,6 +7,7 @@ export interface ITheme {
   secondaryBackground: string,
   color: string,
   error: string,
+  success: string,
 }
 type ThemeName = 'light' | 'dark'
 const initialValue = {
@@ -20,6 +21,7 @@ const initialValue = {
       button: '#1a1a1a',
       secondaryButton: '#1C1C1E',
       error: '#EB615A',
+      success: '#61C454',
     },
     light: {
       color: '#213547',
@@ -28,6 +30,7 @@ const initialValue = {
       background: '#fff',
       secondaryBackground: '#F7F7FA',
       error: '#EB615A',
+      success: '#61C454',
     },
   },
   currentTheme: {},
