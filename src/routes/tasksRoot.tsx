@@ -3,6 +3,7 @@ import { useAppSelector } from '../hooks'
 import styled from 'styled-components'
 import { Sidebar } from '../components/Sidebar'
 import { AddProjectModal } from '../components/AddProjectModal'
+import { TaskInfo } from '../components/TaskInfo'
 
 const TasksWrapper = styled.div`
   width: 100%;
@@ -19,6 +20,7 @@ export const TasksRoot = () => {
       <Sidebar projects={projects} />
       <Outlet />
       <AddProjectModal />
+      <TaskInfo />
     </TasksWrapper>
   )
 }

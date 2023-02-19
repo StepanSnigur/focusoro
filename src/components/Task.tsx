@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ITaskWithListId } from '../selectors/tasksSelectors'
 import { useAppDispatch } from '../hooks'
-import { completeTask } from '../reducers/tasksReducer'
+import { completeTask, openTask } from '../reducers/tasksReducer'
 import styled from 'styled-components'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { Checkbox } from './Checkbox'
@@ -45,6 +45,9 @@ const SliderIcon = styled(FontAwesomeIcon)`
   opacity: ${(props: { active: string }) => (props.active === 'true') ? 1 : .4};
   font-size: 12px;
 `
+const TaskName = styled.span`
+  cursor: pointer;
+`
 
 interface ITaskWrapper {
   task: ITaskWithListId
@@ -56,6 +59,12 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
   const handleCompleteTask = (completed: boolean) => {
     dispatch(completeTask({
       completed,
+      listId: task.listId,
+      taskId: task._id,
+    }))
+  }
+  const handleOpenTask = () => {
+    dispatch(openTask({
       listId: task.listId,
       taskId: task._id,
     }))
@@ -73,8 +82,8 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
         onChange={(completed) => handleCompleteTask(completed)}
       />
       <PlayButton icon={faPlay} onClick={() => handlePlay(task._id)} />
-      <span>{task.name}</span>
-      {task.priorityLevel ? <TaskPriorityWrapper>
+      <TaskName onClick={handleOpenTask}>{task.name}</TaskName>
+      {task.priorityLevel !== null ? <TaskPriorityWrapper>
         {new Array(5).fill(null).map((_, i) => (
           <SliderIcon key={i} icon={faClock} active={(i <= task.priorityLevel).toString()} />
         ))}
