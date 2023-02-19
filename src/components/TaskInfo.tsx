@@ -7,6 +7,9 @@ import {
   changeTaskPriority,
   changeTaskDescription,
 } from '../reducers/tasksReducer'
+import {
+  setCurrentTask,
+} from '../reducers/timerReducer'
 import dayjs from 'dayjs'
 import * as locale from 'dayjs/locale/ru'
 import { getOpenedTask, getOpenedTaskProjectName, ITaskWithListId } from '../selectors/tasksSelectors'
@@ -131,12 +134,15 @@ export const TaskInfo = () => {
   const handleCompleteTask = (completed: boolean) => {
     dispatch(completeTask({
       completed,
-      listId: currentTask?.listId,
-      taskId: currentTask?._id,
+      listId: currentTask.listId,
+      taskId: currentTask._id,
     }))
   }
   const handlePlay = () => {
-    console.log('play', currentTask._id)
+    dispatch(setCurrentTask({
+      listId: currentTask.listId,
+      taskId: currentTask._id,
+    }))
   }
   const handlePriorityChange = (priority: number | null) => {
     dispatch(changeTaskPriority({
