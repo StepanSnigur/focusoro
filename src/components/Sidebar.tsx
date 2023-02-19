@@ -32,7 +32,7 @@ const ListLink = styled(Link)`
   background: ${(props: {
     active: string,
     theme: ITheme,
-    projectColor?: string,
+    projectcolor?: string,
   }) => (props.active === 'true') ? props.theme.button : 'transparent'};
   color: ${(props: { theme: ITheme }) => props.theme.color};
   position: relative;
@@ -45,13 +45,13 @@ const ListLink = styled(Link)`
 
   &:before {
     content: '';
-    display: ${(props: { projectColor?: string }) => props.projectColor ? 'block' : 'none'};
+    display: ${(props: { projectcolor?: string }) => props.projectcolor ? 'block' : 'none'};
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: ${(props: {
-      projectColor?: string,
-    }) => props.projectColor};
+      projectcolor?: string,
+    }) => props.projectcolor};
     position: absolute;
     left: 5px;
     top: 50%;
@@ -129,7 +129,7 @@ export const Sidebar: React.FC<ISidebar> = ({ projects }) => {
           to={`/list/${project._id}`}
           active={(project._id === listId).toString()}
           theme={currentTheme}
-          projectColor={project.color}
+          projectcolor={project.color}
         >{project.name} <span>{project.tasks.length}</span></ListLink>
       ))}
 

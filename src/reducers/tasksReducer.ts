@@ -1,12 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ITaskWithListId } from '../selectors/tasksSelectors'
+import { ITaskWithListId, getTaskById } from '../selectors/tasksSelectors'
 
 export interface ITask {
   _id: string,
   name: string,
+  description: string,
   completed: boolean,
   priorityLevel: number,
   date: string,
+}
+export interface ITaskIds {
+  listId: string,
+  taskId: string,
 }
 export interface IProject {
   _id: string,
@@ -14,11 +19,12 @@ export interface IProject {
   color: string,
   tasks: ITask[],
 }
-interface ITasksReducer {
+export interface ITasksReducer {
   userTasks: ITask[],
   projects: IProject[],
   sortTerm: sortSettingsNames,
   addProjectModalOpen: boolean,
+  openedTask: ITaskIds | null,
 }
 
 export const SORT_SETTINGS = {
@@ -41,6 +47,7 @@ const initialState: ITasksReducer = {
     {
       _id: 'test user task',
       name: 'test user task',
+      description: '',
       completed: true,
       priorityLevel: 5,
       date: '2023-01-12',
@@ -55,8 +62,9 @@ const initialState: ITasksReducer = {
         {
           _id: 'test task',
           name: 'test task',
+          description: '',
           completed: false,
-          priorityLevel: 5,
+          priorityLevel: 4,
           date: '2023-01-14',
         }
       ]
@@ -64,6 +72,7 @@ const initialState: ITasksReducer = {
   ],
   sortTerm: 'byDefault',
   addProjectModalOpen: false,
+  openedTask: null,
 }
 export const tasksSlice = createSlice({
   name: 'tasks',
@@ -88,6 +97,11 @@ export const tasksSlice = createSlice({
         currentTask && (currentTask.completed = action.payload.completed)
       }
     },
+    changeTaskDescription: (state, action) => {
+      const { listId, taskId, description } = action.payload
+      const task = getTaskById(state, listId, taskId)
+      task && (task.description = description)
+    },
     changeSortTerm: (state, action) => {
       state.sortTerm = action.payload
     },
@@ -103,6 +117,25 @@ export const tasksSlice = createSlice({
       }
       state.projects.push(newProject)
     },
+    openTask: (state, action) => {
+      state.openedTask = action.payload
+    },
+    deleteTask: (state, action) => {
+      const { listId, taskId } = action.payload
+      if (listId) { // delete from user projects
+        const project = state.projects.find(project => project._id === listId)
+        if (!project) throw new Error('Project not find')
+        project.tasks = project?.tasks.filter(task => task._id !== taskId)
+      } else { // delete from user tasks
+        state.userTasks = state.userTasks.filter(task => task._id !== taskId)
+      }
+      state.openedTask = null
+    },
+    changeTaskPriority: (state, action) => {
+      const { listId, taskId, priority } = action.payload
+      const task = getTaskById(state, listId, taskId)
+      task && (task.priorityLevel = priority)
+    },
   }
 })
 
@@ -110,8 +143,12 @@ export const {
   addTaskToProject,
   addTaskToUser,
   completeTask,
+  changeTaskDescription,
   changeSortTerm,
   setAddProjectModalOpen,
   addProject,
+  openTask,
+  deleteTask,
+  changeTaskPriority,
 } = tasksSlice.actions
 export default tasksSlice.reducer

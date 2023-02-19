@@ -79,6 +79,7 @@ export const TasksListInput: React.FC<ITaskListInput> = ({ listId, plannedTaskDa
     const newTask = {
       _id: Date.now(),
       name: taskName,
+      description: '',
       completed: false,
       priorityLevel: taskPriority,
       date: formattedDate,

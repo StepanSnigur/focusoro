@@ -28,6 +28,8 @@ export const PrioritySlider: React.FC<IPrioritySlider> = ({ onPriorityChange, pr
   useEffect(() => {
     if (priority === null) {
       setPriorityLevel(-1)
+    } else {
+      setPriorityLevel(priority)
     }
   }, [priority])
 
