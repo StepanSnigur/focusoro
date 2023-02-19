@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { ITaskWithListId } from '../selectors/tasksSelectors'
 import { useAppDispatch } from '../hooks'
 import { completeTask, openTask } from '../reducers/tasksReducer'
+import { setCurrentTask } from '../reducers/timerReducer'
 import styled from 'styled-components'
 import { ThemeContext, ITheme } from '../context/themeContext'
 import { Checkbox } from './Checkbox'
@@ -70,7 +71,10 @@ export const Task: React.FC<ITaskWrapper> = ({ task }) => {
     }))
   }
   const handlePlay = (id: string) => {
-    console.log('play', id)
+    dispatch(setCurrentTask({
+      listId: task.listId,
+      taskId: task._id,
+    }))
   }
 
   return (

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Sidebar } from '../components/Sidebar'
 import { AddProjectModal } from '../components/AddProjectModal'
 import { TaskInfo } from '../components/TaskInfo'
+import { TimerButton } from '../components/TimerButton'
 
 const TasksWrapper = styled.div`
   width: 100%;
@@ -21,6 +22,7 @@ export const TasksRoot = () => {
       <Outlet />
       <AddProjectModal />
       <TaskInfo />
+      <TimerButton />
     </TasksWrapper>
   )
 }
